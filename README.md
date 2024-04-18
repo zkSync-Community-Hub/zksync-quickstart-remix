@@ -15,7 +15,7 @@ You can deploy these contracts and run the provided scripts using Remix:
 
 ### Remix IDE links
 
-- [Open `ZeekSecretMessages.sol` in Remix](https://remix.ethereum.org/#url=https://github.com/uF4No/zksync-101-remix/blob/master/contracts/ZeekSecretMessages.sol)
+- [Open `ZeekSecretMessages.sol` in Remix](https://remix.ethereum.org/#url=https://github.com/uF4No/zksync-101-remix/)
 - [Open `TestToken.sol` in Remix](https://remix.ethereum.org/#url=https://github.com/uF4No/zksync-101-remix/blob/master/contracts/TestToken.sol)
 - [Open `mint-token.ts` in Remix](https://remix.ethereum.org/#url=https://github.com/uF4No/zksync-101-remix/blob/master/scripts/mint-token.ts)
 - [Open `paymaster-transaction.ts` in Remix](https://remix.ethereum.org/#url=https://github.com/uF4No/zksync-101-remix/blob/master/scripts/paymaster-transaction.ts)
