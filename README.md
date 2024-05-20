@@ -1,4 +1,4 @@
-# ZKsync 101 Remix
+# zkSync quickstart Remix
 
 This project contains the following smart contracts:
 
