@@ -1,10 +1,10 @@
 import {ethers} from "ethers";
-import {Provider, Contract, utils} from "zksync-ethers";
+import {Provider, Contract, utils, Signer} from "zksync-ethers";
 
 // Address of the ZeekMessages contract
-const ZEEK_MESSAGES_CONTRACT_ADDRESS = "0x6519565BF8bA80295C0EC0AD8C286C078DDea8ae";
+const ZEEK_MESSAGES_CONTRACT_ADDRESS = "";
 // Address of the ERC20 token contract
-const TOKEN_CONTRACT_ADDRESS = "0x6F1e8260031b0E720DEae3ab44d7761123025A81";
+const TOKEN_CONTRACT_ADDRESS = "";
 // Message to be sent to the contract
 const NEW_MESSAGE = "This tx cost me no ETH!";
 
@@ -21,20 +21,21 @@ const NEW_MESSAGE = "This tx cost me no ETH!";
 
   console.log('Sending a transaction via the testnet paymaster')
 
-  // initialise zkSync provider to retrieve paymaster address
+  const browserProvider = new ethers.providers.Web3Provider(web3Provider)
+
   const zkProvider = new Provider("https://sepolia.era.zksync.dev");
 
-  const signer = (new ethers.providers.Web3Provider(web3Provider)).getSigner(0)
+  // const signer = (new ethers.providers.Web3Provider(web3Provider)).getSigner(0)
+  const zkSigner = Signer.from(browserProvider.getSigner(), zkProvider);
 
-  // signer.provider.formatter.formats.TransactionRequest = {...signer.provider.formatter.formats.TransactionRequest, customData: "function(t){return null==t?a:e(t)}"}
-
-  const walletAddress = await signer.getAddress();
+  // const walletAddress = await signer.getAddress();
+  const walletAddress = await zkSigner.getAddress();
 
   console.log(walletAddress)
 
   // initialise messages and token contracts with address, abi and signer
-  const messagesContract= new Contract(ZEEK_MESSAGES_CONTRACT_ADDRESS, messagesContractABI.abi, signer);
-  const tokenContract= new Contract(TOKEN_CONTRACT_ADDRESS, tokenContractABI.abi, signer);
+  const messagesContract= new Contract(ZEEK_MESSAGES_CONTRACT_ADDRESS, messagesContractABI.abi, zkSigner);
+  const tokenContract= new Contract(TOKEN_CONTRACT_ADDRESS, tokenContractABI.abi, zkSigner);
 
 // retrieve and print the current balance of the wallet
   let ethBalance = await zkProvider.getBalance(walletAddress)
@@ -50,7 +51,7 @@ const NEW_MESSAGE = "This tx cost me no ETH!";
 
   const gasPrice = await zkProvider.getGasPrice();
 
-  console.log(gasPrice)
+  console.log("gasPrice >> ", gasPrice)
 
   // define paymaster parameters for gas estimation
   const paramsForFeeEstimation = utils.getPaymasterParams(testnetPaymasterAddress, {
@@ -70,11 +71,14 @@ const NEW_MESSAGE = "This tx cost me no ETH!";
     },
   });
 
+  console.log("gasLimit >> ", gasLimit)
+
+
   // fee calculated in ETH will be the same in
   // ERC20 token using the testnet paymaster
   const fee = gasPrice * gasLimit;
 
-  console.log(fee);
+  console.log("Fee >>", fee);
 
   // new paymaster params with fee as minimalAllowance
   const paymasterParams = utils.getPaymasterParams(testnetPaymasterAddress, {
@@ -97,7 +101,7 @@ const NEW_MESSAGE = "This tx cost me no ETH!";
     }
   }
 
-  console.log(txOverrides);
+  console.log("overrides >> ", txOverrides);
 
   console.log(`Sign the transaction in your wallet`);
 
@@ -115,6 +119,8 @@ const NEW_MESSAGE = "This tx cost me no ETH!";
   console.log(`Done!`);
 
   } catch (e) {
-    console.log(e.message)
+    console.error('Error in script!')
+    console.error(e.message)
+    console.error(e)
   }
 })()
