@@ -13,8 +13,8 @@ const NEW_MESSAGE = "This tx cost me no ETH!";
     
 // Note that the script needs the ABI which is generated from the compilation artifact.
   // Make sure contract is compiled and artifacts are generated
-  const messagesContractArtifactsPath = `browser/contracts/artifacts/ZeekSecretMessages.json`;
-  const tokenContractArtifactsPath = `browser/contracts/artifacts/TestToken.json`;
+  const messagesContractArtifactsPath = `browser/artifacts/contracts/ZeekMessages.sol/ZeekMessages.json`;
+  const tokenContractArtifactsPath = `browser/artifacts/contracts/TestToken.sol/TestToken.json`;
 
   const messagesContractABI = JSON.parse(await remix.call('fileManager', 'getFile', messagesContractArtifactsPath));
   const tokenContractABI = JSON.parse(await remix.call('fileManager', 'getFile', tokenContractArtifactsPath));
@@ -23,15 +23,21 @@ const NEW_MESSAGE = "This tx cost me no ETH!";
 
   const browserProvider = new ethers.providers.Web3Provider(web3Provider)
 
+  const signer = (new ethers.providers.Web3Provider(web3Provider)).getSigner(0)
+
   const zkProvider = new Provider("https://sepolia.era.zksync.dev");
 
-  // const signer = (new ethers.providers.Web3Provider(web3Provider)).getSigner(0)
+  const testnetPaymasterAddress = await zkProvider.getTestnetPaymasterAddress()
+  console.log(`Testnet paymaster address is ${testnetPaymasterAddress}`);
+
   const zkSigner = Signer.from(browserProvider.getSigner(), zkProvider);
 
-  // const walletAddress = await signer.getAddress();
+
   const walletAddress = await zkSigner.getAddress();
 
-  console.log(walletAddress)
+  const gasPrice = await zkProvider.getGasPrice();
+
+  console.log("gasPrice is >> ", gasPrice)
 
   // initialise messages and token contracts with address, abi and signer
   const messagesContract= new Contract(ZEEK_MESSAGES_CONTRACT_ADDRESS, messagesContractABI.abi, zkSigner);
@@ -44,14 +50,7 @@ const NEW_MESSAGE = "This tx cost me no ETH!";
   console.log(`Account ${walletAddress} has ${ethers.utils.formatUnits(tokenBalance, 18)} tokens`);
 
 
-// retrieve the testnet paymaster address
-  const testnetPaymasterAddress = await zkProvider.getTestnetPaymasterAddress();
 
-  console.log(`Testnet paymaster address is ${testnetPaymasterAddress}`);
-
-  const gasPrice = await zkProvider.getGasPrice();
-
-  console.log("gasPrice >> ", gasPrice)
 
   // define paymaster parameters for gas estimation
   const paramsForFeeEstimation = utils.getPaymasterParams(testnetPaymasterAddress, {
@@ -71,14 +70,14 @@ const NEW_MESSAGE = "This tx cost me no ETH!";
     },
   });
 
-  console.log("gasLimit >> ", gasLimit)
+  console.log("gasLimit is >> ", gasLimit)
 
 
   // fee calculated in ETH will be the same in
   // ERC20 token using the testnet paymaster
   const fee = gasPrice * gasLimit;
 
-  console.log("Fee >>", fee);
+  console.log("Fee is >>", fee);
 
   // new paymaster params with fee as minimalAllowance
   const paymasterParams = utils.getPaymasterParams(testnetPaymasterAddress, {
@@ -100,8 +99,6 @@ const NEW_MESSAGE = "This tx cost me no ETH!";
       paymasterParams,
     }
   }
-
-  console.log("overrides >> ", txOverrides);
 
   console.log(`Sign the transaction in your wallet`);
 

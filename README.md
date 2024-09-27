@@ -1,6 +1,8 @@
-# zkSync quickstart Remix
+# ZKsync quickstart Remix
 
-This project contains the following smart contracts:
+This repo contains a sample project used in the [ZKsync quickstart](https://docs.zksync.io/build/start-coding/quick-start).
+
+The project contains the following smart contracts:
 
 - `ZeekSecretMessages.sol`: stores secret messages
 - `TestToken.sol`: a mintable ERC20 token
@@ -11,11 +13,6 @@ And the following scripts:
 - `paymaster-transaction.ts`: sends a message to the `ZeekSecreMessages.sol` contract paying the transaction fees with the `TestToken.sol` ERC20 token.
   
 
-You can deploy these contracts and run the provided scripts using Remix:
+## Open in Remix
 
-### Remix IDE links
-
-- [Open `ZeekSecretMessages.sol` in Remix](https://remix.ethereum.org/#url=https://github.com/uF4No/zksync-101-remix/)
-- [Open `TestToken.sol` in Remix](https://remix.ethereum.org/#url=https://github.com/uF4No/zksync-101-remix/blob/master/contracts/TestToken.sol)
-- [Open `mint-token.ts` in Remix](https://remix.ethereum.org/#url=https://github.com/uF4No/zksync-101-remix/blob/master/scripts/mint-token.ts)
-- [Open `paymaster-transaction.ts` in Remix](https://remix.ethereum.org/#url=https://github.com/uF4No/zksync-101-remix/blob/master/scripts/paymaster-transaction.ts)
+- [Click here to open this project in Remix](https://remix.ethereum.org/?#activate=zkSync&call=zkSync//loadFromGithub//ZKsync-Community-Hub//zksync-quickstart-remix//)
