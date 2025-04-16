@@ -7,12 +7,11 @@ The project contains the following smart contracts:
 - `ZeekSecretMessages.sol`: stores secret messages
 - `TestToken.sol`: a mintable ERC20 token
 
-And the following scripts:
+And a script that mints a given amount of the ERC20 token to an address
 
-- `mint-token.ts`: mints a given amount of the ERC20 token to an address.
-- `paymaster-transaction.ts`: sends a message to the `ZeekSecreMessages.sol` contract paying the transaction fees with the `TestToken.sol` ERC20 token.
-  
+- `mint-token-evm.ts`: used for EVM-compiled contracts on Remix.
+- `mint-token-era-vm.ts`: used for EraVM-compiled contracts on Remix.
 
 ## Open in Remix
 
-- [Click here to open this project in Remix](https://remix.ethereum.org/?#activate=zkSync&call=zkSync//loadFromGithub//ZKsync-Community-Hub//zksync-quickstart-remix//)
+- Click on the "Clone" button on the "Home" tab on [https://remix.ethereum.org/](https://remix.ethereum.org/) to clone this repository.
